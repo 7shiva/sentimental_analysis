@@ -1,8 +1,27 @@
+import GetOldTweets3 as got
+
 import string
 from collections import Counter
 import matplotlib.pyplot as plt
 
-text = open('read.txt', encoding='utf-8').read()
+
+def get_tweets():
+    tweetCriteria = got.manager.TweetCriteria().setQuerySearch('donald trump') \
+        .setSince("2017-09-01") \
+        .setUntil("2029-04-30") \
+        .setMaxTweets(100)
+    tweets = got.manager.TweetManager.getTweets(tweetCriteria)
+    text_tweets = [[tweet.text] for tweet in tweets]
+    return (text_tweets)
+
+
+text = ""
+text_tweets = get_tweets()
+length = len(text_tweets)
+
+for i in range(0, length):
+    text = text_tweets[i][0] + " " + text
+
 lower_case = text.lower()
 cleaned_text = lower_case.translate(str.maketrans('', '', string.punctuation))
 tokenized_word = cleaned_text.split()
